@@ -27,6 +27,13 @@ Router.get('/',asyncvalidator(async function (req, res) {
     const note = await Courses.find().populate('category');
     res.send({message:note})
 }));
+
+Router.post('/search',asyncvalidator(async function (req, res) {
+    // const note = await Courses.find().populate('category');
+    const course= await Courses.find({ name: { $regex: req.body.value, $options: "i" } });
+    // console.log(s);
+    res.send({message:course})
+}));
 /**
  * @swagger
  *
@@ -60,8 +67,6 @@ Router.post('/',Auth,check('name','name is empty').not().isEmpty()
         instructor:req.body.instructor,
         ratings:req.body.ratings,
         reviews:req.body.reviews
-
-
     });
     await re.save();
     res.send({msg:"Your Courses has been sent"});

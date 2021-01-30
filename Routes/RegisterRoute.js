@@ -45,6 +45,25 @@ const myvalidationResult = validationResult.withDefaults({
  *       200:
  *         description: Registers a user
  */
+Router.get('/',
+    asyncvalidator(async (req,res)=>{
+        const errors = myvalidationResult(req);
+        if(!errors.isEmpty()) return res.status(422).json(errors.array() );
+    const user = await Register.find();
+    if(!user) return res.status(404).send("not found");
+    res.send(user);
+}));
+
+Router.get('/:id',
+    asyncvalidator(async (req,res)=>{
+        const errors = myvalidationResult(req);
+        if(!errors.isEmpty()) return res.status(422).json(errors.array() );
+    const user = await Register.findById(req.params.id);
+    if(!user) return res.status(404).send("not found");
+    res.send(user);
+}));
+
+
 Router.post('/',[
     check('email','Email is Required').isEmail(),
     check('password','password must be min. 6 characters.').isLength({min:6})
@@ -68,4 +87,20 @@ Router.post('/',[
     res.send({token:token});
 
 }));
+
+Router.put('/:id',
+    asyncvalidator(async (req,res)=>{
+        const errors = myvalidationResult(req);
+        if(!errors.isEmpty()) return res.status(422).json(errors.array() );
+    const user = await Register.findByIdAndUpdate(req.params.id , {
+        username:req.body.username,
+        gender:req.body.gender,
+        age:req.body.age,
+        credits:req.body.credits,
+        enrolled:req.body.enrolled
+    }, { new: true });
+    if(!user) return res.status(404).send("not found");
+    res.send(user);
+}));
+
 module.exports=Router;

@@ -1,5 +1,6 @@
 const mongoose= require('mongoose');
 const Categories = require("./Categories");
+const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 
 const Schema = new mongoose.Schema({
     name: {
@@ -41,5 +42,6 @@ const Schema = new mongoose.Schema({
         type:String
     }]
 });
+Schema.plugin(mongoose_fuzzy_searching, { fields: ['name'] });
 const  Courses= mongoose.model('Courses',Schema);
 module.exports =Courses;

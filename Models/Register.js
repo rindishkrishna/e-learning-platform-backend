@@ -5,6 +5,13 @@ const Schema = new mongoose.Schema({
         type:String,
        
     },
+    age: {
+        type:Number,
+       
+    },
+    gender:{
+        type:String
+    },
     email:{type:String,
         required:true,
         unique:true,
