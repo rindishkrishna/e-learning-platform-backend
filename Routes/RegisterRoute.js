@@ -47,7 +47,6 @@ const myvalidationResult = validationResult.withDefaults({
  */
 Router.post('/',[
     check('email','Email is Required').isEmail(),
-    check('username','username should have min. 3 characters').isLength({min:3}),
     check('password','password must be min. 6 characters.').isLength({min:6})
 ],asyncvalidator(async (req,res)=>{
     const errors = myvalidationResult(req);
